@@ -32,8 +32,8 @@ app.use(cors());
 if (process.env.NODE_ENV === 'production'){
     //static let's us serve files from a specified location. 
     app.use(express.static(path.join(__dirname, 'client/build')));
-    //Any GET request that the user requests from the server, we call this function.
-    //In this case we specify that ANY URL the user requests (hence *) will invoke the callback function.
+    // This get request will be matched when the user asks for a route that does not match one of the defined get/post requet routes 
+    // that we define throughout the project.
     app.get('*', function(req, res){
         //Send a response back to the client (serve a file)
         res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
@@ -57,7 +57,7 @@ app.post('/payment', (req, res) => {
     const body = {
         source: req.body.token.id,
         amount: req.body.amount,
-        current: 'usd'
+        currency: 'usd'
     };
 
     // Make the request to charge the payment through Stripe API
