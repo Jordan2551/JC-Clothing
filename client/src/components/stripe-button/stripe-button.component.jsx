@@ -10,26 +10,31 @@ const StripeCheckoutButton = ({ price, clearCart }) => {
   const publishableKey = 'pk_test_DmzfNEXApId3SDWKD37NWEJQ00lhcnZ97S';
 
   // This function gets called when we do our stripe checkout. We send a request to the /payment routeon the server.js backend
-  const onToken = token => {
+  const onToken = (token) => {
     axios({
       url: 'payment', //axios assume this request is to our own sever so we can leave just payment
       method: 'post',
       data: {
-        amount: priceForStripe, 
-        token
-      }
-    }).then(response => {
-      clearCart();
-    }).catch(error => {
-      alert("There was an error with the payment!");
-      console.log('Payment error: ', error);
-    });
+        amount: priceForStripe,
+        token,
+      },
+    })
+      .then((response) => {
+        alert(
+          'Your purchase was successful! Thank you for shopping at JC Clothing!'
+        );
+        clearCart();
+      })
+      .catch((error) => {
+        alert('There was an error with the payment!');
+        console.log('Payment error: ', error);
+      });
   };
 
   return (
     <StripeCheckout
       label='Pay Now'
-      name='CRWN Clothing Ltd.'
+      name='JC Clothing'
       billingAddress
       shippingAddress
       image='https://svgshare.com/i/CUz.svg'
@@ -42,10 +47,8 @@ const StripeCheckoutButton = ({ price, clearCart }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  clearCart: () => dispatch(clearCart())
+const mapDispatchToProps = (dispatch) => ({
+  clearCart: () => dispatch(clearCart()),
 });
 
 export default connect(null, mapDispatchToProps)(StripeCheckoutButton);
-
-
